@@ -11,7 +11,7 @@ public class Libro {
     @Id
     private String id;
     private String nombre;
-    private boolean isDisponible;
+    private boolean disponible;
     private LocalDate fechaPrestamo;
     private String tipo;
     private String area;
@@ -33,11 +33,11 @@ public class Libro {
     }
 
     public boolean isDisponible() {
-        return isDisponible;
+        return disponible;
     }
 
     public void setDisponible(boolean disponible) {
-        isDisponible = disponible;
+        this.disponible = disponible;
     }
 
     public LocalDate getFechaPrestamo() {

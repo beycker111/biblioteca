@@ -1,5 +1,6 @@
 package com.biblioteca.demobiblioteca.controllers;
 
+import com.biblioteca.demobiblioteca.dto.DisponibilidadDTO;
 import com.biblioteca.demobiblioteca.dto.LibroDTO;
 import com.biblioteca.demobiblioteca.services.ServicioLibro;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 @RequestMapping("/libros")
 @RestController
@@ -48,5 +50,31 @@ public class ControladorLibro {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping("/prestar/{id}")
+    public ResponseEntity<LibroDTO> prestar(@PathVariable("id") String id){
+
+        LibroDTO libro = servicioLibro.obtenerPorId(id);
+        if(libro.isDisponible()){
+            //Aqui la diponibilidad es true
+            libro.setDisponible(false);
+            libro.setFechaPrestamo(LocalDate.now());
+            return new ResponseEntity(servicioLibro.modificar(libro), HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @GetMapping("disponibilidad/{id}")
+    public ResponseEntity<DisponibilidadDTO> disponibilidad(@PathVariable("id") String id) {
+        LibroDTO libro = servicioLibro.obtenerPorId(id);
+        DisponibilidadDTO disponibilidadDTO = new DisponibilidadDTO();
+        disponibilidadDTO.setDisponible(libro.isDisponible());
+        if(!libro.isDisponible()){
+            disponibilidadDTO.setFechaPrestamo(libro.getFechaPrestamo());
+        }
+
+        return new ResponseEntity(disponibilidadDTO, HttpStatus.OK);
+    }
+
 
 }

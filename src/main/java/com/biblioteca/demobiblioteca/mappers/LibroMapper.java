@@ -13,7 +13,7 @@ public class LibroMapper {
         Libro libro = new Libro();
         libro.setId(dto.getId());
         libro.setNombre(dto.getNombre());
-        libro.setDisponible(libro.isDisponible());
+        libro.setDisponible(dto.isDisponible());
         libro.setFechaPrestamo(dto.getFechaPrestamo());
         libro.setArea(dto.getArea());
         libro.setTipo(dto.getTipo());
