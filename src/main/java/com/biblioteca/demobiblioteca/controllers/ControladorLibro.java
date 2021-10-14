@@ -64,6 +64,19 @@ public class ControladorLibro {
         return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
     }
 
+    @PutMapping("/devolver/{id}")
+    public ResponseEntity<String> devolver(@PathVariable("id") String id){
+
+        LibroDTO libro = servicioLibro.obtenerPorId(id);
+        if(!libro.isDisponible()){
+            //Aqui la diponibilidad es true
+            libro.setDisponible(true);
+            servicioLibro.modificar(libro);
+            return new ResponseEntity("Libro devuelto", HttpStatus.OK);
+        }
+        return new ResponseEntity("El libro no se puede devolver porque está disponible", HttpStatus.FORBIDDEN);
+    }
+
     @GetMapping("disponibilidad/{id}")
     public ResponseEntity<DisponibilidadDTO> disponibilidad(@PathVariable("id") String id) {
         LibroDTO libro = servicioLibro.obtenerPorId(id);
